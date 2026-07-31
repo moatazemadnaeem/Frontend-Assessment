@@ -70,3 +70,20 @@ export async function getActivityFromBackend(): Promise<ActivityLog[]> {
     throw new Error(error instanceof Error ? error.message : "Failed to load activity logs.");
   }
 }
+
+export async function getReportsFromBackend(): Promise<any> {
+  try {
+    const response = await fetch(buildBackendUrl("/reports/tasks-summary"), {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(await parseError(response));
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : "Failed to load reports summary.");
+  }
+}
+
