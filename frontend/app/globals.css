@@ -1,14 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --bg: #f8f8f6;
+  --bg: #fafafa;
   --surface: #ffffff;
-  --text: #1e2328;
-  --muted: #5c6670;
-  --border: #d3d8de;
-  --primary: #145e63;
-  --primary-soft: #dcefee;
-  --danger: #9f2241;
-  --chip: #f1f4f6;
-  --radius: 10px;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-soft: #eff6ff;
+  --danger: #ef4444;
+  --danger-soft: #fef2f2;
+  --chip: #f1f5f9;
+  --radius: 12px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * {
@@ -19,10 +27,11 @@ html,
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
-  background: radial-gradient(circle at top right, #eef4e7, var(--bg) 55%);
+  min-height: 100vh;
+  background: var(--bg);
   color: var(--text);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -31,57 +40,115 @@ a {
 }
 
 main {
-  width: min(980px, 100% - 2rem);
+  width: min(1024px, 100% - 2rem);
   margin: 0 auto;
-  padding: 2rem 0 3rem;
+  padding: 3rem 0 5rem;
 }
 
+/* Base Card Styling */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
+/* Link Cards for Homepage Hover Effects */
+a.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: #cbd5e1;
+}
+
+/* Button Styling */
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   border: 1px solid var(--border);
-  background: var(--chip);
+  background: var(--surface);
   color: var(--text);
   border-radius: 8px;
-  padding: 0.45rem 0.8rem;
-  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
 }
 
 .button:hover {
-  border-color: #bac1c9;
+  background: var(--chip);
+  border-color: #cbd5e1;
 }
 
 .button.primary {
   background: var(--primary);
   border-color: var(--primary);
   color: #fff;
+  box-shadow: 0 2px 4px rgb(59 130 246 / 0.2);
 }
 
+.button.primary:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+/* Badge/Chip Styling */
 .badge {
   display: inline-flex;
   align-items: center;
-  border-radius: 999px;
+  border-radius: 9999px;
   border: 1px solid var(--border);
-  padding: 0.2rem 0.65rem;
+  padding: 0.25rem 0.75rem;
   font-size: 0.75rem;
-  background: var(--chip);
+  font-weight: 500;
+  background: var(--surface);
+  transition: var(--transition);
 }
 
+/* Input Fields */
 .input {
   width: 100%;
   border-radius: 8px;
   border: 1px solid var(--border);
-  padding: 0.55rem 0.7rem;
+  padding: 0.65rem 1rem;
   font-size: 0.95rem;
-  background: #fff;
+  background: var(--surface);
+  transition: var(--transition);
+  outline: none;
 }
 
+.input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
+
+/* Layout Utilities */
 .stack {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* List Item Hover for Activity & Tasks */
+li {
+  transition: var(--transition);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+
+li:hover {
+  background: var(--chip);
+}
+
+nav {
+  margin-bottom: 1.5rem;
 }
