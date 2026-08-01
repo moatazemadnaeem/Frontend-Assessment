@@ -8,10 +8,15 @@ import {
   ListTodo,
   ActivitySquare,
 } from "lucide-react";
+import { MetricCard } from "@/components/reports/MetricCard";
 import { useReports } from "@/hooks/useReports";
 
 export default function ReportsPage() {
   const { summary, loading, error } = useReports();
+
+  const pendingTasks = summary?.byStatus
+    ? summary.byStatus.todo + summary.byStatus["in-progress"]
+    : 0;
 
   return (
     <main className="stack">
@@ -21,192 +26,60 @@ export default function ReportsPage() {
         </Link>
       </nav>
 
-      <section className="card" style={{ padding: "2rem" }}>
-        <h1
-          style={{
-            marginTop: 0,
-            marginBottom: "0.5rem",
-            fontSize: "2rem",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          System Reports
-        </h1>
-        <p style={{ margin: 0, color: "var(--muted)" }}>
+      <section className="card reports-hero">
+        <h1 className="reports-hero__title">System Reports</h1>
+        <p className="reports-hero__description">
           Overview of task metrics and recent system activity.
         </p>
       </section>
 
       {loading && (
-        <section
-          className="card"
-          style={{ padding: "3rem", textAlign: "center" }}
-        >
-          <p style={{ margin: 0, color: "var(--muted)", fontSize: "1.1rem" }}>
-            Loading reports...
-          </p>
+        <section className="card reports-state-card">
+          <p className="reports-state-card__message">Loading reports...</p>
         </section>
       )}
 
       {error && (
-        <section
-          className="card"
-          style={{
-            padding: "2rem",
-            borderColor: "var(--danger)",
-            background: "var(--danger-soft)",
-          }}
-        >
-          <p style={{ margin: 0, color: "var(--danger)", fontWeight: 500 }}>
+        <section className="card reports-state-card reports-state-card--error">
+          <p className="reports-state-card__message reports-state-card__message--error">
             {error}
           </p>
         </section>
       )}
 
       {!loading && !error && summary && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "1.5rem",
-          }}
-        >
-          <div
-            className="card"
-            style={{
-              padding: "1.5rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderTop: "4px solid var(--text)",
-            }}
-          >
-            <div>
-              <h3
-                style={{
-                  margin: "0 0 0.5rem 0",
-                  color: "var(--muted)",
-                  fontWeight: 500,
-                }}
-              >
-                Total Tasks
-              </h3>
-              <p style={{ margin: 0, fontSize: "2.5rem", fontWeight: "700", color: "var(--text)" }}>
-                {summary.total}
-              </p>
-            </div>
-            <div style={{ color: "var(--text)", opacity: 0.8 }}>
-              <ListTodo size={48} strokeWidth={1.5} />
-            </div>
-          </div>
+        <div className="reports-grid">
+          <MetricCard
+            title="Total Tasks"
+            value={summary.total}
+            icon={ListTodo}
+            accentColor="var(--text)"
+            valueColor="var(--text)"
+          />
 
-          <div
-            className="card"
-            style={{
-              padding: "1.5rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderTop: "4px solid #10b981",
-            }}
-          >
-            <div>
-              <h3
-                style={{
-                  margin: "0 0 0.5rem 0",
-                  color: "var(--muted)",
-                  fontWeight: 500,
-                }}
-              >
-                Done Tasks
-              </h3>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "2.5rem",
-                  fontWeight: "700",
-                  color: "#10b981",
-                }}
-              >
-                {summary.byStatus.done}
-              </p>
-            </div>
-            <div style={{ color: "#10b981", opacity: 0.8 }}>
-              <CheckCircle2 size={48} strokeWidth={1.5} />
-            </div>
-          </div>
+          <MetricCard
+            title="Done Tasks"
+            value={summary.byStatus.done}
+            icon={CheckCircle2}
+            accentColor="#10b981"
+            valueColor="#10b981"
+          />
 
-          <div
-            className="card"
-            style={{
-              padding: "1.5rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderTop: "4px solid #f59e0b",
-            }}
-          >
-            <div>
-              <h3
-                style={{
-                  margin: "0 0 0.5rem 0",
-                  color: "var(--muted)",
-                  fontWeight: 500,
-                }}
-              >
-                Pending Tasks
-              </h3>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "2.5rem",
-                  fontWeight: "700",
-                  color: "#f59e0b",
-                }}
-              >
-                {summary.byStatus.todo + summary.byStatus["in-progress"]}
-              </p>
-            </div>
-            <div style={{ color: "#f59e0b", opacity: 0.8 }}>
-              <CircleDashed size={48} strokeWidth={1.5} />
-            </div>
-          </div>
+          <MetricCard
+            title="Pending Tasks"
+            value={pendingTasks}
+            icon={CircleDashed}
+            accentColor="#f59e0b"
+            valueColor="#f59e0b"
+          />
 
-          <div
-            className="card"
-            style={{
-              padding: "1.5rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderTop: "4px solid var(--primary)",
-            }}
-          >
-            <div>
-              <h3
-                style={{
-                  margin: "0 0 0.5rem 0",
-                  color: "var(--muted)",
-                  fontWeight: 500,
-                }}
-              >
-                Recent Activities
-              </h3>
-              <p
-                style={{
-                  margin: 0,
-                  fontSize: "2.5rem",
-                  fontWeight: "700",
-                  color: "var(--primary)",
-                }}
-              >
-                {summary.recentActivityCount}
-              </p>
-            </div>
-            <div style={{ color: "var(--primary)", opacity: 0.8 }}>
-              <ActivitySquare size={48} strokeWidth={1.5} />
-            </div>
-          </div>
+          <MetricCard
+            title="Recent Activities"
+            value={summary.recentActivityCount}
+            icon={ActivitySquare}
+            accentColor="var(--primary)"
+            valueColor="var(--primary)"
+          />
         </div>
       )}
     </main>
