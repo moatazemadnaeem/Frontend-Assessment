@@ -1,9 +1,17 @@
 import { NextResponse } from "next/server";
-import { getReportsFromBackend } from "@/lib/backendApi";
+import { BACKEND_BASE_URL } from "@/lib/constants";
 
 export async function GET() {
   try {
-    const reports = await getReportsFromBackend();
+    const response = await fetch(`${BACKEND_BASE_URL}/reports/tasks-summary`, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+
+    const reports = await response.json();
     return NextResponse.json(reports, { status: 200 });
   } catch (error) {
     return NextResponse.json(

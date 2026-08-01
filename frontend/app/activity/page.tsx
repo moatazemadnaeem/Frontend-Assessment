@@ -1,44 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import type { ActivityLog } from "@/types/api";
+import { useMemo, useState } from "react";
+import { useActivity } from "@/hooks/useActivity";
 
 export default function ActivityPage() {
-  const [activities, setActivities] = useState<ActivityLog[]>([]);
+  const { activities, loading, error } = useActivity();
   const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-    
-    fetch("/api/activity")
-      .then((response) => {
-        if (!response.ok) throw new Error("Failed to fetch activity");
-        return response.json();
-      })
-      .then((data: ActivityLog[]) => {
-        if (isMounted) {
-          setActivities(data || []);
-          setError("");
-        }
-      })
-      .catch((err) => {
-        if (isMounted) {
-          setError(err.message || "An error occurred");
-          setActivities([]);
-        }
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const visibleActivities = useMemo(() => {
     if (!query.trim()) return activities;

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { updateTaskInBackend } from "@/lib/backendApi";
+import { BACKEND_BASE_URL } from "@/lib/constants";
 
 type RouteParams = {
   params: {
@@ -18,7 +18,20 @@ export async function PATCH(request: Request, { params }: RouteParams) {
       );
     }
 
-    const task = await updateTaskInBackend(params.id, payload.completed);
+    const response = await fetch(`${BACKEND_BASE_URL}/tasks/${params.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ completed: payload.completed }),
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+
+    const { data: task } = await response.json();
     return NextResponse.json({ data: task }, { status: 200 });
   } catch (error) {
     return NextResponse.json(

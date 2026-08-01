@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -9,51 +8,10 @@ import {
   ListTodo,
   ActivitySquare,
 } from "lucide-react";
-
-interface ReportsSummary {
-  total: number;
-  byStatus: {
-    todo: number;
-    "in-progress": number;
-    done: number;
-  };
-  recentActivityCount: number;
-}
+import { useReports } from "@/hooks/useReports";
 
 export default function ReportsPage() {
-  const [summary, setSummary] = useState<ReportsSummary | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    let isMounted = true;
-    setLoading(true);
-
-    fetch("/api/reports")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load reports");
-        return res.json();
-      })
-      .then((data) => {
-        if (isMounted) {
-          setSummary(data);
-          setError("");
-        }
-      })
-      .catch((err) => {
-        if (isMounted) {
-          setError(err.message || "An error occurred");
-          setSummary(null);
-        }
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const { summary, loading, error } = useReports();
 
   return (
     <main className="stack">
