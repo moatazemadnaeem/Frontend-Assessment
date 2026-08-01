@@ -1,15 +1,9 @@
 import type { ActivityLog } from "@/types/api";
+import { formatDateTime } from "@/utils/date";
 
 type ActivityItemProps = {
   activity: ActivityLog;
 };
-
-function formatTime(value: string) {
-  return new Date(value).toLocaleString(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short",
-  });
-}
 
 export function ActivityItem({ activity }: ActivityItemProps) {
   return (
@@ -26,7 +20,7 @@ export function ActivityItem({ activity }: ActivityItemProps) {
         {activity.info || "No details provided"}
       </div>
       <small style={{ color: "var(--muted)" }}>
-        {formatTime(activity.when)}
+        {formatDateTime(activity.when)}
       </small>
     </li>
   );

@@ -1,4 +1,5 @@
 import type { Task } from "@/types/api";
+import { formatDateTime } from "@/utils/date";
 
 type TaskItemProps = {
   task: Task;
@@ -22,7 +23,7 @@ export function TaskItem({ task, busy, onToggle }: TaskItemProps) {
       </div>
 
       <small style={{ color: "var(--muted)" }}>
-        Updated: {new Date(task.updatedAt).toLocaleString()}
+        Updated: {formatDateTime(task.updatedAt)}
       </small>
 
       <div>
