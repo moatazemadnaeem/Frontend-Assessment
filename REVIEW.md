@@ -24,6 +24,7 @@ Fetching data directly in components leads to tight coupling, makes testing diff
 
 * **Duplicate Functions**: `formatTimeA`/`formatTimeB` and `applyFilterA`/`applyFilterB` were completely redundant. Fixed by stripping out duplicates and keeping a single, clean utility function.
 * **State Mismanagement**: The component managed three separate state arrays (`allActivity`, `shownActivity`, `forcedList`) for a single data source. Fixed by storing only the raw `data` and the `searchQuery` in state, deriving the visible list dynamically during render.
+* **Repeated Reports UI Markup**: The reports page used repeated metric-card JSX and inline styles for each stat. Fixed by extracting a reusable `MetricCard` component and moving shared styling into the global stylesheet for better reuse and easier maintenance.
 
 ## 3. UX & Architecture
 
